@@ -19,13 +19,7 @@ import java.time.LocalDateTime;
 import static com.sky.constant.AutoFillConstant.*;
 
 /**
- * ClassName: AutoFillAspect
- * Package: com.sky.aspect
- * Description:
- *
- * @Author 尚硅谷-宋红康
- * @Create 2026/1/26 13:41
- * @Version 1.0
+ * 通用字段填充
  */
 
 // 切面类
@@ -58,31 +52,32 @@ public class AutoFillAspect {
         //根据当前不同操作类型，给对应的属性通过反射字段赋值
         if (operationType == OperationType.INSERT) {
             try {
-                // 设置创建时间和更新时间
+                // 1. 获取方法对象 (注意常量名要和类型一一对应)
                 Method setCreateTime = entity.getClass().getDeclaredMethod(SET_CREATE_TIME, LocalDateTime.class);
-                Method setUpdateTime = entity.getClass().getDeclaredMethod(SET_CREATE_USER, LocalDateTime.class);
-                Method setCreateUser = entity.getClass().getDeclaredMethod(SET_UPDATE_TIME, Long.class);
+                Method setUpdateTime = entity.getClass().getDeclaredMethod(SET_UPDATE_TIME, LocalDateTime.class); // 修正了
+                Method setCreateUser = entity.getClass().getDeclaredMethod(SET_CREATE_USER, Long.class); // 修正了
                 Method setUpdateUser = entity.getClass().getDeclaredMethod(SET_UPDATE_USER, Long.class);
 
+                // 2. 执行赋值
                 setCreateTime.invoke(entity, now);
                 setUpdateTime.invoke(entity, now);
                 setCreateUser.invoke(entity, currentId);
                 setUpdateUser.invoke(entity, currentId);
 
             } catch (Exception e) {
-                log.error("公共字段填充失败: {}", e.getMessage());
+                log.error("INSERT 公共字段填充失败: {}", e.getMessage());
             }
         } else if (operationType == OperationType.UPDATE) {
             try {
-                // 设置更新时间
-                Method setUpdateTime = entity.getClass().getDeclaredMethod(SET_CREATE_USER, LocalDateTime.class);
+                // UPDATE 只需更新两个字段
+                Method setUpdateTime = entity.getClass().getDeclaredMethod(SET_UPDATE_TIME, LocalDateTime.class); // 修正了
                 Method setUpdateUser = entity.getClass().getDeclaredMethod(SET_UPDATE_USER, Long.class);
 
                 setUpdateTime.invoke(entity, now);
                 setUpdateUser.invoke(entity, currentId);
 
             } catch (Exception e) {
-                log.error("公共字段填充失败: {}", e.getMessage());
+                log.error("UPDATE 公共字段填充失败: {}", e.getMessage());
             }
         }
     }
