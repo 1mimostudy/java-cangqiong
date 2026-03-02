@@ -3,7 +3,11 @@ package com.sky.mapper.service;
 
 import com.sky.entity.Dish;
 import com.sky.entity.dto.DishDTO;
+import com.sky.entity.dto.DishPageQueryDTO;
+import com.sky.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 public interface DishService {
     /**
@@ -11,4 +15,8 @@ public interface DishService {
      * @param dishDTO
      */
     public void saveWithFlavor(DishDTO dishDTO);
+
+    PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO);
+
+    void deleteBatch(List<Long> ids);
 }
