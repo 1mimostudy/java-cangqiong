@@ -25,4 +25,6 @@ public interface DishService {
     //修改菜品和口味数据
 
     void updateWithFlavor(DishDTO dishDTO);
+
+    List<Dish> list(Long categoryId);
 }
