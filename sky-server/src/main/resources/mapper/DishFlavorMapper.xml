@@ -7,7 +7,6 @@
         insert into dish_flavor (dish_id, name, value) values
         <foreach collection="flavors" item="dishFlavor" separator=",">
             (#{dishFlavor.dishId},#{dishFlavor.name},#{dishFlavor.value})
-
         </foreach>
     </insert>
     <delete id="deleteByDishIds">

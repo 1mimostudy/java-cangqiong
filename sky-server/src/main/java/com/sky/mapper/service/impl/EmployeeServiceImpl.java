@@ -120,7 +120,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .id(id)
                 .build();
         employeeMapper.update(employee);
-
     }
 /**
  * 根据id查询员工信息
